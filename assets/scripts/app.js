@@ -1,7 +1,7 @@
 const listElement = document.querySelector('.posts') // select element with class 'posts'
 const postTemplate = document.getElementById('single-post')
 
-function sendHttpRequest(method, url) {
+function sendHttpRequest(method, url, data) {
     const promise = new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest()
 
@@ -14,41 +14,53 @@ function sendHttpRequest(method, url) {
             // console.log(xhr.response);
         }
 
-        xhr.send()
+        xhr.send(JSON.stringify(data))
     })
     return promise
 }
 
-// // cach 1:
-// async function fetchPosts() {
-//     const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
-//     // const listOfPosts = JSON.parse(xhr.response)
-//     const listOfPosts = responseData
-//     console.log(listOfPosts);
-//     for (const post of listOfPosts) {
-//         const postEl = document.importNode(postTemplate.content, true)
-//         postEl.querySelector('h2').textContent = post.title.toUpperCase()
-//         postEl.querySelector('p').textContent = post.body
-//         listElement.append(postEl)
-//     }
+// // cach 2:
+// function fetchPosts() {
+//     sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
+//     .then(responseData => {
+//         const listOfPosts = responseData
+//         console.log(listOfPosts);
+//         for (const post of listOfPosts) {
+//             const postEl = document.importNode(postTemplate.content, true)
+//             postEl.querySelector('h2').textContent = post.title.toUpperCase()
+//             postEl.querySelector('p').textContent = post.body
+//             listElement.append(postEl)
+//         }
+//     })
 // }
 
 // fetchPosts()
 
-// // cach 2:
-function fetchPosts() {
-    sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
-    .then(responseData => {
-        const listOfPosts = responseData
-        console.log(listOfPosts);
-        for (const post of listOfPosts) {
-            const postEl = document.importNode(postTemplate.content, true)
-            postEl.querySelector('h2').textContent = post.title.toUpperCase()
-            postEl.querySelector('p').textContent = post.body
-            listElement.append(postEl)
-        }
-    })
+// // cach 1:
+async function fetchPosts() {
+    const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
+    // const listOfPosts = JSON.parse(xhr.response)
+    const listOfPosts = responseData
+    console.log(listOfPosts);
+    for (const post of listOfPosts) {
+        const postEl = document.importNode(postTemplate.content, true)
+        postEl.querySelector('h2').textContent = post.title.toUpperCase()
+        postEl.querySelector('p').textContent = post.body
+        listElement.append(postEl)
+    }
+}
+
+async function createPost(title, content) {
+    const userId = Math.random()
+    const post = {
+        title: title,
+        body: content,
+        userId: userId
+    }
+
+    sendHttpRequest('POST', 'https://jsonplaceholder.typicode.com/posts', post)
 }
 
 fetchPosts()
+createPost('DUMMY', 'A dummy post!')
 
