@@ -31,7 +31,10 @@ function sendHttpRequest(method, url, data) {
         // xhr.send(JSON.stringify(data))
     // })
     // return promise
-    return fetch(url).then(response => {
+    return fetch(url, {
+        method: method,
+        body: JSON.stringify(data)
+    }).then(response => {
         // response.text() // returns plain text
         // response.blob() // return a file and we can download it
         return response.json()
