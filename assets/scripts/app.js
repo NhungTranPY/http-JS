@@ -5,21 +5,37 @@ const fetchButton = document.querySelector('#available-posts button')
 const postList = document.querySelector('ul')
 
 function sendHttpRequest(method, url, data) {
-    const promise = new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest()
+    // const promise = new Promise((resolve, reject) => {
+        // const xhr = new XMLHttpRequest()
 
-        xhr.open(method, url)
+        // xhr.open(method, url)
 
-        xhr.responseType = 'json' // ~ JSON.parse(xhr.response)
+        // xhr.responseType = 'json' // ~ JSON.parse(xhr.response)
 
-        xhr.onload = function() {
-            resolve(xhr.response)
-            // console.log(xhr.response);
-        }
+        // xhr.onload = function() {
+        //     if (xhr.status >= 200 && xhr.status < 300) {
+        //         resolve(xhr.response) 
+        //     } else {
+        //         reject(new Error('Something went wrong!'))
+        //     }
+            
+        //     // console.log(xhr.response);
+        // }
 
-        xhr.send(JSON.stringify(data))
+        // xhr.onerror = function() {
+        //     // console.log(xhr.response);
+        //     // console.log(xhr.status);
+        //     reject(new Error('Failed to send request!'))
+        // }
+
+        // xhr.send(JSON.stringify(data))
+    // })
+    // return promise
+    return fetch(url).then(response => {
+        // response.text() // returns plain text
+        // response.blob() // return a file and we can download it
+        return response.json()
     })
-    return promise
 }
 
 // // cach 2:
@@ -41,6 +57,21 @@ function sendHttpRequest(method, url, data) {
 
 // // cach 1:
 async function fetchPosts() {
+    // try {
+    //     const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
+    //     // const listOfPosts = JSON.parse(xhr.response)
+    //     const listOfPosts = responseData
+    //     console.log(listOfPosts);
+    //     for (const post of listOfPosts) {
+    //     const postEl = document.importNode(postTemplate.content, true)
+    //     postEl.querySelector('h2').textContent = post.title.toUpperCase()
+    //     postEl.querySelector('p').textContent = post.body
+    //     postEl.querySelector('li').id = post.id
+    //     listElement.append(postEl)
+    // }
+    // } catch (error) {
+    //     alert(error.message)
+    // }
     const responseData = await sendHttpRequest('GET', 'https://jsonplaceholder.typicode.com/posts')
     // const listOfPosts = JSON.parse(xhr.response)
     const listOfPosts = responseData
